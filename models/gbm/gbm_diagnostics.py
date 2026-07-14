@@ -3,6 +3,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent
+OUTPUT_DIR = BASE_DIR / "outputs"
+OUTPUT_DIR.mkdir(exist_ok=True)
+
 
 API_URL = "https://psx-rest-api.onrender.com"
 
@@ -90,6 +97,11 @@ def summarize_shocks(df: pd.DataFrame):
 def save_plots(df: pd.DataFrame, symbol: str):
     z = df["standardized_shock"]
 
+    standardized_histogram_path = OUTPUT_DIR / "standardized_shocks_histogram.png"
+    shocks_over_time_path = OUTPUT_DIR / "standardized_shocks_over_time.png"
+    log_returns_path = OUTPUT_DIR / "log_returns_over_time.png"
+    rolling_volatility_path = OUTPUT_DIR / "rolling_volatility_60d.png"
+
     plt.figure(figsize=(10, 6))
     plt.hist(z, bins=60, density=True, alpha=0.7)
 
@@ -101,7 +113,7 @@ def save_plots(df: pd.DataFrame, symbol: str):
     plt.xlabel("Standardized shock")
     plt.ylabel("Density")
     plt.grid(True)
-    plt.savefig("standardized_shocks_histogram.png", dpi=150)
+    plt.savefig(standardized_histogram_path, dpi=150)
     plt.close()
 
     plt.figure(figsize=(10, 6))
@@ -113,7 +125,7 @@ def save_plots(df: pd.DataFrame, symbol: str):
     plt.xlabel("Date")
     plt.ylabel("Standardized shock")
     plt.grid(True)
-    plt.savefig("standardized_shocks_over_time.png", dpi=150)
+    plt.savefig(shocks_over_time_path, dpi=150)
     plt.close()
 
     plt.figure(figsize=(10, 6))
@@ -123,7 +135,7 @@ def save_plots(df: pd.DataFrame, symbol: str):
     plt.xlabel("Date")
     plt.ylabel("Daily log return")
     plt.grid(True)
-    plt.savefig("log_returns_over_time.png", dpi=150)
+    plt.savefig(log_returns_path, dpi=150)
     plt.close()
 
     plt.figure(figsize=(10, 6))
@@ -132,8 +144,15 @@ def save_plots(df: pd.DataFrame, symbol: str):
     plt.xlabel("Date")
     plt.ylabel("60-day rolling standard deviation of log returns")
     plt.grid(True)
-    plt.savefig("rolling_volatility_60d.png", dpi=150)
+    plt.savefig(rolling_volatility_path, dpi=150)
     plt.close()
+
+    return [
+        standardized_histogram_path,
+        shocks_over_time_path,
+        log_returns_path,
+        rolling_volatility_path,
+    ]
 
 
 def main():
@@ -157,14 +176,12 @@ def main():
 
     summarize_shocks(df)
 
-    save_plots(df, symbol)
+    saved_files = save_plots(df, symbol)
 
     print()
     print("Charts saved:")
-    print("standardized_shocks_histogram.png")
-    print("standardized_shocks_over_time.png")
-    print("log_returns_over_time.png")
-    print("rolling_volatility_60d.png")
+    for file_path in saved_files:
+        print(file_path)
 
 
 if __name__ == "__main__":
