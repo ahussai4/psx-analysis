@@ -59,7 +59,7 @@ The conditional variance asks a more local question:
 Let $\mathcal{F}_{t-1}$ represent all information available before observing the return at time $t$. The conditional variance of the return is then
 
 ```math
-\operatorname{Var}(r_t \mid \mathcal{F}_{t-1}).
+\mathrm{Var}(r_t \mid \mathcal{F}_{t-1}).
 ```
 
 In a GARCH model, this conditional variance changes over time.
@@ -69,7 +69,7 @@ We write it as
 ```math
 \sigma_t^2
 =
-\operatorname{Var}(r_t \mid \mathcal{F}_{t-1}).
+\mathrm{Var}(r_t \mid \mathcal{F}_{t-1}).
 ```
 
 Thus, $\sigma_t$ is not one fixed number. It is a time series of conditional volatilities.
@@ -112,7 +112,7 @@ The standardized innovations are usually assumed to satisfy
 ```math
 E[z_t]=0,
 \qquad
-\operatorname{Var}(z_t)=1.
+\mathrm{Var}(z_t)=1.
 ```
 
 A first model may assume
@@ -263,7 +263,7 @@ A commonly used condition for covariance stationarity is
 Under this condition, the unconditional variance of the shocks is
 
 ```math
-\operatorname{Var}(\varepsilon_t)
+\mathrm{Var}(\varepsilon_t)
 =
 \frac{\omega}{1-\alpha-\beta}.
 ```
